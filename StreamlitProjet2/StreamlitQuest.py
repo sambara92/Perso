@@ -1,52 +1,57 @@
-
 import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Charger les données
-@st.cache
-def load_data():
-    data = pd.read_csv("https://raw.githubusercontent.com/murpi/wilddata/master/quests/cars.csv")
-    return data
+url = "https://raw.githubusercontent.com/murpi/wilddata/master/quests/cars.csv"
+data = pd.read_csv(url)
 
-# Analyse de corrélation
+# Gérer l'avertissement PyplotGlobalUseWarning
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
+# Fonction d'analyse de corrélation
 def correlation_analysis(data):
     st.subheader("Analyse de corrélation")
-    data_numeric = data.select_dtypes(include=['float64', 'int64'])
-    corr = data_numeric.corr()
-    fig, ax = plt.subplots()
-    sns.heatmap(corr, annot=True, cmap='coolwarm', linewidths=0.5, ax=ax)
-    st.pyplot(fig)
-
-# Distribution des données
-def distribution_analysis(data):
-    st.subheader("Distribution des données")
-    sns.pairplot(data, diag_kind='kde')
-    plt.tight_layout()  # Ajout de cette ligne
+    corr = data.corr()
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(corr, annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5)
     st.pyplot()
 
-# Filtrage par continent
-def filter_by_continent(data):
-    st.subheader("Filtrage par continent")
-    continents = data['continent'].unique()
-    selected_continent = st.selectbox("Sélectionnez un continent :", continents)
-    filtered_data = data[data['continent'] == selected_continent]
+# Fonction d'analyse de distribution
+def distribution_analysis(data):
+    st.subheader("Analyse de distribution")
+    sns.pairplot(data, diag_kind='kde')
+    plt.tight_layout()  # Assurez-vous que la disposition est serrée
+    st.pyplot()
+
+# Filtrer les données par région
+def filter_by_region(data, region):
+    filtered_data = data[data['continent'] == region]
     return filtered_data
 
-# Chargement des données
-data = load_data()
+# Interface utilisateur Streamlit
+def main():
+    st.title("Analyse des voitures en fonction de la région")
+    
+    # Afficher les données brutes
+    st.write("Aperçu des données brutes :")
+    st.write(data.head())
 
-# Titre de l'application
-st.title("Analyse des données des voitures")
+    # Analyse de corrélation
+    correlation_analysis(data)
 
-# Analyse de corrélation et de distribution
-correlation_analysis(data)
-distribution_analysis(data)
+    # Analyse de distribution
+    distribution_analysis(data)
 
-# Filtrage par continent
-filtered_data = filter_by_continent(data)
+    # Filtrer par région
+    regions = data['continent'].unique()
+    selected_region = st.selectbox("Sélectionner une région :", regions)
+    filtered_data = filter_by_region(data, selected_region)
 
-# Affichage des données filtrées
-st.subheader("Données filtrées par continent")
-st.write(filtered_data)
+    # Afficher les données filtrées
+    st.subheader(f"Données pour la région : {selected_region}")
+    st.write(filtered_data.head())
+
+if __name__ == "__main__":
+    main()
