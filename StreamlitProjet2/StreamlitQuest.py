@@ -15,8 +15,9 @@ def correlation_analysis(data):
     st.subheader("Analyse de corrélation")
     data_numeric = data.select_dtypes(include=['float64', 'int64'])
     corr = data_numeric.corr()
-    sns.heatmap(corr, annot=True, cmap='coolwarm', linewidths=0.5)
-    st.pyplot()
+    fig, ax = plt.subplots()
+    sns.heatmap(corr, annot=True, cmap='coolwarm', linewidths=0.5, ax=ax)
+    st.pyplot(fig)
 
 # Distribution des données
 def distribution_analysis(data):
