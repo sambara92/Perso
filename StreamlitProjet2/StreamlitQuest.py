@@ -1,3 +1,5 @@
+python
+Copy code
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -12,7 +14,8 @@ def load_data():
 # Analyse de corrélation
 def correlation_analysis(data):
     st.subheader("Analyse de corrélation")
-    corr = data.corr()
+    data_numeric = data.select_dtypes(include=['float64', 'int64'])
+    corr = data_numeric.corr()
     sns.heatmap(corr, annot=True, cmap='coolwarm', linewidths=0.5)
     st.pyplot()
 
