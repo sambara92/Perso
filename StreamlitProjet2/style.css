@@ -1,0 +1,34 @@
+/* style.css */
+
+body {
+    background-color: #283747;
+}
+
+header {
+    background: linear-gradient(to right, #ff4b1f, #1fddff);
+    color: white;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+.sidebar .sidebar-content {
+    background-color: #303030;
+    color: white;
+}
+
+footer {
+    background: linear-gradient(to right, #1fddff, #ff4b1f);
+    color: white;
+    padding: 5px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#gif-container {
+    display: flex;
+    justify-content: center; 
+    
+    
+}
+
