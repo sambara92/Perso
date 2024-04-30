@@ -23,6 +23,7 @@ def correlation_analysis(data):
 def distribution_analysis(data):
     st.subheader("Distribution des données")
     sns.pairplot(data, diag_kind='kde')
+    plt.tight_layout()  # Ajout de cette ligne
     st.pyplot()
 
 # Filtrage par continent
